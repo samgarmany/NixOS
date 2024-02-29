@@ -150,7 +150,7 @@
     git
     # gnome.gnome-software
     heroic
-    libreoffice
+    libreoffice-fresh
     python3
     thunderbird
     tmux
