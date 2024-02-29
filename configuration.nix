@@ -51,9 +51,11 @@
   networking = {
     hostId = "0033ce89";
     hostName = "nixos"; # Define your hostname.
+    nameservers = [ "94.140.14.14" "94.140.15.15" "2a10:50c0::ad1:ff" "2a10:50c0::ad2:ff" ];
+    networkmanager.dns = "none";
     # Pick only one of the below networking options.
     # wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-    networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+    # networkmanager.enable = true;  # Easiest to use and most distros use this by default.
   };
 
   # Set your time zone.
