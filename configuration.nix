@@ -1,14 +1,16 @@
 # Edit this configuration file to define what should be installed on
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
-
-{ config, lib, pkgs, ... }:
-
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   # Boot loader config for configuration.nix:
   boot.loader.grub = {
@@ -17,41 +19,44 @@
     efiSupport = true;
     efiInstallAsRemovable = true;
     mirroredBoots = [
-      { devices = [ "nodev"]; path = "/boot"; }
+      {
+        devices = ["nodev"];
+        path = "/boot";
+      }
     ];
   };
 
-  fileSystems."/" =
-    { device = "NixOS/root";
-      fsType = "zfs";
-    };
+  fileSystems."/" = {
+    device = "NixOS/root";
+    fsType = "zfs";
+  };
 
-  fileSystems."/nix" =
-    { device = "NixOS/nix";
-      fsType = "zfs";
-    };
+  fileSystems."/nix" = {
+    device = "NixOS/nix";
+    fsType = "zfs";
+  };
 
-  fileSystems."/var" =
-    { device = "NixOS/var";
-      fsType = "zfs";
-    };
+  fileSystems."/var" = {
+    device = "NixOS/var";
+    fsType = "zfs";
+  };
 
-  fileSystems."/home" =
-    { device = "NixOS/home";
-      fsType = "zfs";
-    };
+  fileSystems."/home" = {
+    device = "NixOS/home";
+    fsType = "zfs";
+  };
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/6F38-6C71";
-      fsType = "vfat";
-    };
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/6F38-6C71";
+    fsType = "vfat";
+  };
 
   zramSwap.enable = true;
 
   networking = {
     hostId = "0033ce89";
     hostName = "nixos"; # Define your hostname.
-    nameservers = [ "94.140.14.14" "94.140.15.15" "2a10:50c0::ad1:ff" "2a10:50c0::ad2:ff" ];
+    nameservers = ["94.140.14.14" "94.140.15.15" "2a10:50c0::ad1:ff" "2a10:50c0::ad2:ff"];
     networkmanager.dns = "none";
     # Pick only one of the below networking options.
     # wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -81,7 +86,7 @@
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-  services.xserver.excludePackages = [ pkgs.xterm ];
+  services.xserver.excludePackages = [pkgs.xterm];
 
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
@@ -89,24 +94,26 @@
   # services.gnome.core-utilities.enable = false;
   # environment.gnome.excludePackages = [ pkgs.gnome-tour ];
   services.xserver.displayManager.autoLogin.enable = true;
-  services.xserver.displayManager.autoLogin.user = "samgarmany"; 
-  environment.gnome.excludePackages = (with pkgs; [
-    gnome-console
-    gnome-tour
-    snapshot
-  ]) ++ (with pkgs.gnome; [
-    epiphany # web browser
-    file-roller
-    geary # email reader
-    gnome-calendar
-    gnome-contacts
-    gnome-maps
-    gnome-music
-    seahorse
-    simple-scan
-    totem
-    yelp
-  ]);
+  services.xserver.displayManager.autoLogin.user = "samgarmany";
+  environment.gnome.excludePackages =
+    (with pkgs; [
+      gnome-console
+      gnome-tour
+      snapshot
+    ])
+    ++ (with pkgs.gnome; [
+      epiphany # web browser
+      file-roller
+      geary # email reader
+      gnome-calendar
+      gnome-contacts
+      gnome-maps
+      gnome-music
+      seahorse
+      simple-scan
+      totem
+      yelp
+    ]);
 
   # Configure keymap in X11
   # services.xserver.xkb.layout = "us";
@@ -122,25 +129,23 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-  # Disable root user
-  users.users.root.hashedPassword = null;
-
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.samgarmany = {
     isNormalUser = true;
     description = "Sam Garmany";
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = ["wheel"]; # Enable ‘sudo’ for the user.
   };
 
   # Flatpak
   # services.flatpak.enable = true;
 
   # Allow unfree
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-    "steam"
-    "steam-original"
-    "steam-run"
-  ];
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) [
+      "steam"
+      "steam-original"
+      "steam-run"
+    ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -174,7 +179,7 @@
   };
 
   # Fonts
-  fonts.packages = with pkgs; [ (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })];
+  fonts.packages = with pkgs; [(nerdfonts.override {fonts = ["JetBrainsMono"];})];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -217,6 +222,4 @@
   #
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
   system.stateVersion = "23.11"; # Did you read the comment?
-
 }
-
